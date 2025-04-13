@@ -5,6 +5,7 @@ import './App.css';
 export default function App() {
   const [companies, setCompanies] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState('');
   const [search, setSearch] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [offset, setOffset] = useState(0);
@@ -15,44 +16,73 @@ export default function App() {
     fetchCategories();
   }, [offset]);
 
-  // Fetch companies with dynamic offset
   const fetchCompanies = async () => {
     setLoading(true);
     try {
       const res = await axios.get(`https://api.boycottisraeli.biz/v1/companies?offset=${offset}`);
-      setCompanies(prevCompanies => [...prevCompanies, ...res.data.data]);
+      setCompanies(prev => [...prev, ...res.data.data]);
     } catch (error) {
       console.error("Error fetching companies:", error);
     }
     setLoading(false);
   };
 
-  // Fetch categories
   const fetchCategories = async () => {
-    const res = await axios.get('https://api.boycottisraeli.biz/v1/categories?limit=4&offset=2');
-    setCategories(res.data.data);
+    try {
+      const res = await axios.get('https://api.boycottisraeli.biz/v1/categories');
+      setCategories(res.data.data);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
+
+  const fetchCompaniesByCategory = async (slug) => {
+    setLoading(true);
+    try {
+      const res = await axios.get(`https://api.boycottisraeli.biz/v1/categories/${slug}/companies`);
+      setSearchResults(res.data.data);
+      setSelectedCategory(slug);
+    } catch (error) {
+      console.error("Error fetching companies by category:", error);
+    }
+    setLoading(false);
   };
 
   const handleSearch = async () => {
+    if (!search.trim()) return;
     try {
       const res = await axios.get(`https://api.boycottisraeli.biz/v1/search/${encodeURIComponent(search)}`);
-      setSearchResults(res.data.data);
+      const filteredByName = res.data.data.filter(c => c.name.toLowerCase().includes(search.toLowerCase()));
+      setSearchResults(filteredByName);
+      setSelectedCategory('');
     } catch (error) {
       console.error("Search failed:", error.message);
       setSearchResults([]);
     }
   };
-  
 
-  // Load more companies
-  const loadMore = () => {
-    setOffset(prevOffset => prevOffset + 4);
-  };
+  const loadMore = () => setOffset(prev => prev + 4);
 
-  // Check if company is boycotted
-  const checkBoycotted = (type) => {
-    return type === 'supports-israel' ? 'Boycotted' : 'Not Boycotted';
-  };
+  const checkBoycotted = (type) => type === 'supports-israel' ? '🚫Boycotted' : '✅Not Boycotted';
+
+  const renderCompanyCard = (company) => (
+    <div key={company.slug} className="company-card">
+      <img
+        src={company.logo?.url}
+        alt={`${company.name} logo`}
+        className="company-logo"
+      />
+      <h3 className="company-name">{company.name}</h3>
+      <p className="company-description">{company.description}</p>
+      <p className="company-boycotted">{checkBoycotted(company.type)}</p>
+      {company.website && (
+        <a href={company.website} target="_blank" rel="noreferrer" className="company-link">
+          Visit Website
+        </a>
+      )}
+     
+    </div>
+  );
 
   return (
     <div className="app-container">
@@ -62,80 +92,59 @@ export default function App() {
       </header>
 
       <section className="content">
-        <div className="search-bar">
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search boycott reason (e.g., food, beverage)"
-            className="search-input"
-          />
-          <button
-            onClick={handleSearch}
-            className="search-button"
-          >
-            Search
-          </button>
-        </div>
-
-        {searchResults.length > 0 && (
-          <div className="results">
-            <h2 className="section-title">🔍 Search Results</h2>
-            <div className="cards-grid">
-              {searchResults.map((company) => (
-                <div key={company.slug} className="company-card">
-                  <img
-                    src={company.logo?.url}
-                    alt={`${company.name} logo`}
-                    className="company-logo"
-                  />
-                  <h3 className="company-name">{company.name}</h3>
-                  <p className="company-description">{company.description}</p>
-                  <p className="company-boycotted">{checkBoycotted(company.type)}</p>
-                  <a href={company.website} target="_blank" rel="noreferrer" className="company-link">Visit Website</a>
-                </div>
-              ))}
-            </div>
+        <div className="sidebar">
+          <h2>📂 Categories</h2>
+          <div className="categories-list">
+            {categories.map((cat) => (
+              <button
+                key={cat.slug}
+                className={`category-btn ${selectedCategory === cat.slug ? 'selected' : ''}`}
+                onClick={() => fetchCompaniesByCategory(cat.slug)}
+              >
+                {cat.name}
+              </button>
+            ))}
           </div>
-        )}
-
-        <h2 className="section-title">🔥 All Companies</h2>
-        <div className="cards-grid">
-          {companies.map((company) => (
-            <div key={company.slug} className="company-card">
-              <img
-                src={company.logo?.url}
-                alt={`${company.name} logo`}
-                className="company-logo"
-              />
-              <h3 className="company-name">{company.name}</h3>
-              <p className="company-description">{company.description}</p>
-              <p className="company-boycotted">{checkBoycotted(company.type)}</p>
-              <a href={company.website} target="_blank" rel="noreferrer" className="company-link">Visit Website</a>
-            </div>
-          ))}
         </div>
 
-        {loading ? (
-          <div className="loading-indicator">Loading...</div>
-        ) : (
-          <button
-            onClick={loadMore}
-            className="load-more-button"
-            disabled={loading}
-          >
-            {loading ? 'Loading...' : 'Load More'}
-          </button>
-        )}
+        <div className="main-content">
+          <div className="search-bar">
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search company name"
+              className="search-input"
+            />
+            <button onClick={handleSearch} className="search-button">
+              Search
+            </button>
+          </div>
 
-        <h2 className="section-title">📂 Categories</h2>
-        <div className="categories-grid">
-          {categories.map((cat) => (
-            <div key={cat.slug} className="category-card">
-              <h3 className="category-name">{cat.name}</h3>
-              <p className="category-description">{cat.description || 'No description available'}</p>
-            </div>
-          ))}
+          {searchResults.length > 0 && (
+            <>
+              <h2 className="section-title">🔍 Results</h2>
+              <div className="cards-grid">
+                {searchResults.map(renderCompanyCard)}
+              </div>
+            </>
+          )}
+
+          {!searchResults.length && (
+            <>
+              <h2 className="section-title">🔥 All Companies</h2>
+              <div className="cards-grid">
+                {companies.map(renderCompanyCard)}
+              </div>
+              {loading ? (
+                <div className="loading-indicator">Loading...</div>
+              ) : (
+                <button onClick={loadMore} className="load-more-button">
+                  Load More
+                </button>
+              )}
+            </>
+          )}
         </div>
       </section>
 
