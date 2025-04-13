@@ -30,7 +30,6 @@ All the data is retrieved from the Boycott API and displayed in a clean and user
 ### Example Endpoints:
 - `GET https://api.boycottisraeli.biz/v1/companies` – Retrieves list of companies
 - `GET https://api.boycottisraeli.biz/v1/categories` – Retrieves list of categories
-- `GET https://api.boycottisraeli.biz/v1/categories/{slug}/companies` – Get companies by category
 - `GET https://api.boycottisraeli.biz/v1/search/{term}` – Search companies by name
 
 ### REST Principles Highlighted:
