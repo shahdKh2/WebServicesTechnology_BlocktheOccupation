@@ -19,7 +19,7 @@ export default function App() {
   const fetchCompanies = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(`https://api.boycottisraeli.biz/v1/companies?offset=${offset}`);
+      const res = await axios.get(`https://api.boycottisraeli.biz/v1/companies`);
       setCompanies(prev => [...prev, ...res.data.data]);
     } catch (error) {
       console.error("Error fetching companies:", error);
@@ -147,7 +147,6 @@ export default function App() {
           )}
         </div>
       </section>
-
       <footer className="footer">
         <p>Powered by <a href="https://boycottisraeli.biz" target="_blank" rel="noreferrer" className="footer-link">Boycott API</a></p>
       </footer>
