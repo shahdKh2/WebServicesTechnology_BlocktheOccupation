@@ -86,14 +86,24 @@ export default function App() {
 
   return (
     <div className="app-container">
-      <header className="header">
-        <h1 className="header-title">🛑 Block the Occupation</h1>
-        <p className="header-subtitle">Discover and avoid companies that support oppression</p>
+       <header className="header">
+        <div className="header-container">
+          <div className="logo-container">
+            <img src="/logo.png" alt="Logo" className="logo" />
+          </div>
+          <div className="title-container">
+            <h1 className="header-title">Block the Occupation</h1>
+          </div>
+        </div>
+        <p className="header-subtitle">
+             Discover and avoid companies that support oppression
+        </p>
       </header>
+
 
       <section className="content">
         <div className="sidebar">
-          <h2>📂 Categories</h2>
+          <h2> Categories</h2>
           <div className="categories-list">
             {categories.map((cat) => (
               <button
@@ -132,7 +142,7 @@ export default function App() {
 
           {!searchResults.length && (
             <>
-              <h2 className="section-title">🔥 All Companies</h2>
+              <h2 className="section-title"> All Companies</h2>
               <div className="cards-grid">
                 {companies.map(renderCompanyCard)}
               </div>
