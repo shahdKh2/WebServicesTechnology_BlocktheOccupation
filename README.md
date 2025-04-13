@@ -1,70 +1,61 @@
-# Getting Started with Create React App
+# 🛑 Block the Occupation - Assignment 1
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 👥 Group Members
 
-## Available Scripts
+- Sama Wahidee
+- Majd Hamarshi
+- Shahd Khalaf
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## 📌 Project Description
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+This project is part of Assignment 1, where we explored and consumed a public RESTful API directly from the frontend using React and Axios. The chosen API is the [Boycott Israeli Businesses API](https://boycottisraeli.biz), which provides information about companies that support or oppose the Israeli occupation. The main goal of the app is to allow users to explore and search for companies based on categories, search terms, and pagination.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Users can:
+- View companies that support or oppose the occupation.
+- Filter companies by category.
+- Search by company name.
+- Load more results dynamically.
+- Navigate to company websites.
+  
+All the data is retrieved from the Boycott API and displayed in a clean and user-friendly interface.
 
-### `npm test`
+---
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 🔗 API Used
 
-### `npm run build`
+**Boycott Israeli Businesses API**
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Example Endpoints:
+- `GET https://api.boycottisraeli.biz/v1/companies` – Retrieves list of companies
+- `GET https://api.boycottisraeli.biz/v1/categories` – Retrieves list of categories
+- `GET https://api.boycottisraeli.biz/v1/categories/{slug}/companies` – Get companies by category
+- `GET https://api.boycottisraeli.biz/v1/search/{term}` – Search companies by name
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### REST Principles Highlighted:
+- **Resources:** Companies, Categories (e.g., `/v1/companies`, `/v1/categories`)
+- **HTTP Methods:** `GET`
+- **Representation:** Responses are in JSON
+- **Query Params:** 
+  - `/v1/companies?offset=4` – for pagination
+  - `/v1/search/term` – for keyword searching
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+## 💻 Technologies Used
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- React
+- Axios (for HTTP requests)
+- HTML/CSS
+- Public API from boycottisraeli.biz
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+---
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## 📸 Screenshots
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+> Include screenshots of:
+> - The homepage showing all companies
+> - Filtering by category
+> - Searching by keyword
+> - Response in Postman (optional)
