@@ -139,10 +139,16 @@
   color: #555;
 }
 
-.company-boycotted {
-  font-size: 0.9rem;
+.boycotted-red {
   color: red;
+  font-weight: bold;
 }
+
+.boycotted-green {
+  color: green;
+  font-weight: bold;
+}
+
 
 .company-link {
   text-decoration: none;
@@ -224,4 +230,11 @@
   height: 70px;
   margin-right: 10px; /* Space between the logo and text */
   border-radius: 5px; /* Optional: rounded corners for the logo */
+}
+.no-results-message {
+  font-size: 18px;
+  color: #ff4c4c;
+  margin-top: 1rem;
+  font-weight: bold;
+  text-align: center;
 }

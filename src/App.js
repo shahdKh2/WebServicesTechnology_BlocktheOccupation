@@ -8,19 +8,19 @@ export default function App() {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [search, setSearch] = useState('');
   const [searchResults, setSearchResults] = useState([]);
-  const [offset, setOffset] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [hasSearched, setHasSearched] = useState(false);
 
   useEffect(() => {
     fetchCompanies();
     fetchCategories();
-  }, [offset]);
+  }, []);
 
   const fetchCompanies = async () => {
     setLoading(true);
     try {
       const res = await axios.get(`https://api.boycottisraeli.biz/v1/companies`);
-      setCompanies(prev => [...prev, ...res.data.data]);
+      setCompanies(res.data.data);
     } catch (error) {
       console.error("Error fetching companies:", error);
     }
@@ -42,6 +42,7 @@ export default function App() {
       const res = await axios.get(`https://api.boycottisraeli.biz/v1/categories/${slug}/companies`);
       setSearchResults(res.data.data);
       setSelectedCategory(slug);
+      setHasSearched(false);
     } catch (error) {
       console.error("Error fetching companies by category:", error);
     }
@@ -50,6 +51,8 @@ export default function App() {
 
   const handleSearch = async () => {
     if (!search.trim()) return;
+    setHasSearched(true);
+    setLoading(true);
     try {
       const res = await axios.get(`https://api.boycottisraeli.biz/v1/search/${encodeURIComponent(search)}`);
       const filteredByName = res.data.data.filter(c => c.name.toLowerCase().includes(search.toLowerCase()));
@@ -59,11 +62,8 @@ export default function App() {
       console.error("Search failed:", error.message);
       setSearchResults([]);
     }
+    setLoading(false);
   };
-
-  const loadMore = () => setOffset(prev => prev + 4);
-
-  const checkBoycotted = (type) => type === 'supports-israel' ? '🚫Boycotted' : '✅Not Boycotted';
 
   const renderCompanyCard = (company) => (
     <div key={company.slug} className="company-card">
@@ -74,19 +74,24 @@ export default function App() {
       />
       <h3 className="company-name">{company.name}</h3>
       <p className="company-description">{company.description}</p>
-      <p className="company-boycotted">{checkBoycotted(company.type)}</p>
+      <p
+        className={`company-boycotted ${
+          company.type === 'supports-israel' ? 'boycotted-red' : 'boycotted-green'
+        }`}
+      >
+        {company.type === 'supports-israel' ? '🚫 Boycotted' : '✅ Not Boycotted'}
+      </p>
       {company.website && (
         <a href={company.website} target="_blank" rel="noreferrer" className="company-link">
           Visit Website
         </a>
       )}
-     
     </div>
   );
 
   return (
     <div className="app-container">
-       <header className="header">
+      <header className="header">
         <div className="header-container">
           <div className="logo-container">
             <img src="/logo.png" alt="Logo" className="logo" />
@@ -96,14 +101,13 @@ export default function App() {
           </div>
         </div>
         <p className="header-subtitle">
-             Discover and avoid companies that support oppression
+          Discover and avoid companies that support oppression
         </p>
       </header>
 
-
       <section className="content">
         <div className="sidebar">
-          <h2> Categories</h2>
+          <h2>Categories</h2>
           <div className="categories-list">
             {categories.map((cat) => (
               <button
@@ -131,6 +135,12 @@ export default function App() {
             </button>
           </div>
 
+          {hasSearched && searchResults.length === 0 && !loading && (
+            <div className="no-results-message">
+              ❌ Company or product not found.
+            </div>
+          )}
+
           {searchResults.length > 0 && (
             <>
               <h2 className="section-title">🔍 Results</h2>
@@ -140,25 +150,33 @@ export default function App() {
             </>
           )}
 
-          {!searchResults.length && (
+          {!search && !hasSearched && (
             <>
-              <h2 className="section-title"> All Companies</h2>
-              <div className="cards-grid">
-                {companies.map(renderCompanyCard)}
-              </div>
+              <h2 className="section-title">All Companies</h2>
               {loading ? (
                 <div className="loading-indicator">Loading...</div>
               ) : (
-                <button onClick={loadMore} className="load-more-button">
-                  Load More
-                </button>
+                <div className="cards-grid">
+                  {companies.map(renderCompanyCard)}
+                </div>
               )}
             </>
           )}
         </div>
       </section>
+
       <footer className="footer">
-        <p>Powered by <a href="https://boycottisraeli.biz" target="_blank" rel="noreferrer" className="footer-link">Boycott API</a></p>
+        <p>
+          Powered by{' '}
+          <a
+            href="https://boycottisraeli.biz"
+            target="_blank"
+            rel="noreferrer"
+            className="footer-link"
+          >
+            Boycott API
+          </a>
+        </p>
       </footer>
     </div>
   );
