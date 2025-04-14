@@ -2,9 +2,9 @@
 
 ## 👥 Group Members
 
-- Sama Wahidee
-- Majd Hamarshi
-- Shahd Khalaf
+- [Sama Wahidee](https://github.com/Sama-wahidee) 
+- [Majd Hamarshi](https://github.com/MajdHamarsheh)
+- [Shahd Khalaf](https://github.com/shahdKh2)
 
 ---
 
@@ -31,30 +31,43 @@ All the data is retrieved from the Boycott API and displayed in a clean and user
 - `GET https://api.boycottisraeli.biz/v1/companies` – Retrieves list of companies
 - `GET https://api.boycottisraeli.biz/v1/categories` – Retrieves list of categories
 - `GET https://api.boycottisraeli.biz/v1/search/{term}` – Search companies by name
+- `GET https://api.boycottisraeli.biz/v1/categories/{slug}/companies`- Retrieves companies under a category.
 
 ### REST Principles Highlighted:
 - **Resources:** Companies, Categories (e.g., `/v1/companies`, `/v1/categories`)
 - **HTTP Methods:** `GET`
 - **Representation:** Responses are in JSON
-- **Query Params:** 
-  - `/v1/companies?offset=4` – for pagination
-  - `/v1/search/term` – for keyword searching
 
 ---
 
 ## 💻 Technologies Used
 
-- React
-- Axios (for HTTP requests)
-- HTML/CSS
-- Public API from boycottisraeli.biz
+- **Frontend Framework:** React  
+- **HTTP Client:** Axios  
+- **Styling:** HTML, CSS  
+- **API:** [boycottisraeli.biz](https://boycottisraeli.biz)
 
 ---
 
-## 📸 Screenshots
+## 🛠️ How to Run the Project
 
-> Include screenshots of:
-> - The homepage showing all companies
-> - Filtering by category
-> - Searching by keyword
-> - Response in Postman (optional)
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/shahdKh2/WebServicesTechnology_BlocktheOccupation
+   cd WebServicesTechnology_BlocktheOccupation
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Start the development server:
+   ```bash
+   npm start
+   ```
+
+4. Open your browser and visit:
+   ```
+   http://localhost:3000
+   ```

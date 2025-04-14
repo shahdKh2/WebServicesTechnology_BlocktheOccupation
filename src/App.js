@@ -145,7 +145,8 @@ export default function App() {
           </div>
         </div>
         <p className="header-subtitle">
-          Discover and avoid companies that support oppression
+          &nbsp;&nbsp;&nbsp;&nbsp;Discover and avoid companies that support
+          oppression
         </p>
       </header>
 
