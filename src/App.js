@@ -65,10 +65,13 @@ export default function App() {
       const res = await axios.get(
         `https://api.boycottisraeli.biz/v1/search/${encodeURIComponent(search)}`
       );
-      const filteredByName = res.data.data.filter((c) =>
-        c.name.toLowerCase().includes(search.toLowerCase())
+  
+      const filteredResults = res.data.data.filter((c) =>
+        (c.name?.toLowerCase().includes(search.toLowerCase()) ||
+         c.description?.toLowerCase().includes(search.toLowerCase()))
       );
-      setSearchResults(filteredByName);
+  
+      setSearchResults(filteredResults);
       setSelectedCategory("");
     } catch (error) {
       console.error("Search failed:", error.message);
@@ -76,6 +79,7 @@ export default function App() {
     }
     setLoading(false);
   };
+  
 
   const openAlternativesPopup = (company) => {
     setPopupTitle(company.name);
@@ -192,7 +196,7 @@ export default function App() {
             </>
           )}
 
-          {!search && !hasSearched && (
+          {!hasSearched && (
             <>
               <h2 className="section-title">All Companies</h2>
               {loading ? (
