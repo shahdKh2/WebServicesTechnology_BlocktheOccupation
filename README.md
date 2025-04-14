@@ -2,9 +2,9 @@
 
 ## 👥 Group Members
 
-- Sama Wahidee  
-- Majd Hamarshi  
-- Shahd Khalaf
+- [Sama Wahidee](https://github.com/Sama-wahidee) 
+- [Majd Hamarshi](https://github.com/MajdHamarsheh)
+- [Shahd Khalaf](https://github.com/shahdKh2)
 
 ---
 
